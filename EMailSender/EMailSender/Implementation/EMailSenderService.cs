@@ -11,7 +11,7 @@ namespace EMailSender
         {
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
-                .WriteTo.File(new CompactJsonFormatter(), "logger")
+                .WriteTo.File(new CompactJsonFormatter(), "logger") //.WriteTo.Seq("https://80.78.240.16/logger.txt")
                 .CreateLogger();
 
             var fromMailAddress = new MailAddress("Test42Test42Test42Test42Test@gmail.com", "CRM");
