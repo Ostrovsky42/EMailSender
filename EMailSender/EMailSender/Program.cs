@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Net.Mail;
+using Serilog;
 
 namespace EMailSender
 {
@@ -7,11 +8,16 @@ namespace EMailSender
     {
         static void Main(string[] args)
         {
-            EMailSenderService qq = new EMailSenderService();
-            List<MailAddress> listMail = new List<MailAddress>();
-            listMail.Add(new ("tootoo9723@gmail.com" ));
+
+            var emailSenderService = new EMailSenderService();
+            var listMail = new List<MailAddress>();
+
+            //listMail.Add(new("tootoo9723@gmail.com"));
             listMail.Add(new("Zhekul.90@gmail.com"));
-            qq.SendMail("Test", "Dear Student", listMail);
+
+            emailSenderService.SendMail("Test", "Dear Student", listMail);
+
+            Log.Information("dispoce log");
         }
     }
 }
