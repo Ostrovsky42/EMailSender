@@ -1,19 +1,27 @@
 ﻿using System.Net.Mail;
 using System.Net;
-
+using Serilog;
+using Serilog.Formatting.Compact;
 
 namespace EMailSender
 {
     public class EMailSenderService
     {
-        public void SendMail(EmailDto emailDto)         
+        public void SendMail(EmailDto emailDto)
         {
-            MailAddress fromMailAddress = new MailAddress("Test42Test42Test42Test42Test@gmail.com", "CRM");           
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.File(new CompactJsonFormatter(), "logger")
+                .CreateLogger();
+
+            var fromMailAddress = new MailAddress("Test42Test42Test42Test42Test@gmail.com", "CRM");
             foreach (var toAddress in emailDto.MailAddresses)
             {
-                using (MailMessage mailMessage = new MailMessage(fromMailAddress, toAddress))
-                using (SmtpClient smtpClient = new SmtpClient())
+                using (var mailMessage = new MailMessage(fromMailAddress, toAddress))
+                using (var smtpClient = new SmtpClient())
                 {
+                    Log.Debug($"Write body:[{emailDto.Body}] with Subject:[{emailDto.Subject}] to [{toAddress}] from [{fromMailAddress.Address}]");
+
                     mailMessage.Subject = emailDto.Subject;
                     mailMessage.Body = emailDto.Body;
                     smtpClient.Host = "smtp.gmail.com";
