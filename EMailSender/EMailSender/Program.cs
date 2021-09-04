@@ -6,12 +6,16 @@ namespace EMailSender
     class Program
     {
         static void Main(string[] args)
-        {
+        {      
             EMailSenderService qq = new EMailSenderService();
-            List<MailAddress> listMail = new List<MailAddress>();
-            listMail.Add(new ("tootoo9723@gmail.com" ));
-            listMail.Add(new("Zhekul.90@gmail.com"));
-            qq.SendMail("Test", "Dear Student", listMail);
+            EmailDto emailDto =new EmailDto();
+
+            emailDto.MailAddresses.Add(new("tootoo9723@gmail.com"));
+            emailDto.MailAddresses.Add(new("Zhekul.90@gmail.com"));
+            emailDto.Subject = "Test";
+            emailDto.Body = "Where is my money?";
+            qq.SendMail(emailDto);          
+
         }
     }
 }
