@@ -7,7 +7,7 @@ namespace EMailSender
     {
         static void Main(string[] args)
         {
-            EmailDto emailDto =new EmailDto();
+            var emailDto = new EmailDto();
             emailDto.MailAddresses = new List<MailAddress>
             {
                // new("tootoo9723@gmail.com"),
@@ -16,8 +16,8 @@ namespace EMailSender
             emailDto.Subject = "Test Log";
             emailDto.Body = "Where is my money?";
 
-            EMailSenderService emailSenderService = new EMailSenderService();
-            emailSenderService.SendMail(emailDto);          
+            var emailSenderService = new EMailSenderService();
+            emailSenderService.SendMail(emailDto);
         }
     }
 }
