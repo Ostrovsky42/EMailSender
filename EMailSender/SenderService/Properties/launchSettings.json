@@ -1,0 +1,25 @@
+﻿{
+
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:57232/",
+      "sslPort": 44304
+    }
+  },
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "EMailSender(Gmail)": {
+      "commandName": "EMailSender",
+      "launchBrowser": false,
+      "environmentVariables": {
+        "Host": "smtp.gmail.com",
+        "Port": "587",
+        "FromEmail": "Test42Test42Test42Test42Test@gmail.com",
+        "Password": "EMailSenderTest42",
+        "DisplayName": "CRM"
+      }
+    }
+  }
+}
