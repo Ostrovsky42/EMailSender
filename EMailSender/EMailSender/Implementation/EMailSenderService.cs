@@ -1,9 +1,10 @@
-﻿using System.Net.Mail;
-using System.Net;
+﻿using System.Net;
+using System.Net.Mail;
+using EMailSender.Models;
 using Serilog;
 using Serilog.Formatting.Compact;
 
-namespace EMailSender
+namespace EMailSender.Implementation
 {
     public class EMailSenderService
     {

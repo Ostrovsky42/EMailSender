@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Net.Mail;
+using EMailSender.Implementation;
+using EMailSender.Models;
 
 namespace EMailSender
 {
