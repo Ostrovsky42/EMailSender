@@ -46,10 +46,10 @@ namespace EmailWorker
                 {
                     var dto = new EmailDto
                     {
-                        MailAddresses = new List<MailAddress> { new MailAddress("zhekul.90@gmail.com") }
+                        Subject = "Test",
+                        Body = "Come over here!",
+                        MailAddresses = new List<MailAddress> { new("zhekul.90@gmail.com") }
                     };
-                    dto.Subject = "Test";
-                    dto.Body = "Come over here!";
 
                     var service = new EMailSenderService(_options, _logger);
                     service.SendMail(dto);

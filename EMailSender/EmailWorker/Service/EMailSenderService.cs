@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Mail;
 using EmailWorker.Models;
 using EmailWorker.Settings;
@@ -12,9 +13,9 @@ namespace EmailWorker.Service
         private readonly EmailConfig _config;
         private readonly ILogger<Worker> _logger;
 
-        public EMailSenderService(IOptions<EmailConfig> config, ILogger<Worker> logger)
+        public EMailSenderService(IOptions<EmailConfig> options, ILogger<Worker> logger)
         {
-            _config = config.Value;
+            _config = options.Value;
             _logger = logger;
         }
 
@@ -26,8 +27,8 @@ namespace EmailWorker.Service
                 using (var mailMessage = new MailMessage(fromMailAddress, toAddress))
                 using (var smtpClient = new SmtpClient())
                 {
-                    _logger.LogInformation("Write body:[{emailDto.Body}] with Subject:[{emailDto.Subject}] to [{toAddress}] from [{fromMailAddress.Address}]"
-                        ,emailDto.Body, emailDto.Subject, toAddress, fromMailAddress.Address);
+                    _logger.LogInformation("Write body:[{emailDto.Body}] with Subject:[{emailDto.Subject}] to [{toAddress}] from [{fromMailAddress.Address}] at {time}"
+                        ,emailDto.Body, emailDto.Subject, toAddress, fromMailAddress.Address, DateTimeOffset.Now);
 
                     mailMessage.Subject = emailDto.Subject;
                     mailMessage.Body = emailDto.Body;
