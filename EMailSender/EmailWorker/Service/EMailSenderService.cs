@@ -1,19 +1,21 @@
 ﻿using System.Net;
 using System.Net.Mail;
 using EmailWorker.Models;
+using EmailWorker.Settings;
+using Microsoft.Extensions.Options;
 
 namespace EmailWorker.Service
 {
-    public class EMailSenderService : IEMailSenderService   
+    public class EMailSenderService : IEMailSenderService
     {
-        public void SendMail(EmailDto emailDto)
+        public void SendMail(EmailDto emailDto, IOptions<ConnSettings> options)
         {
             //Log.Logger = new LoggerConfiguration()
             //    .MinimumLevel.Debug()
             //    .WriteTo.File(new CompactJsonFormatter(), "logger") //.WriteTo.Seq("https://80.78.240.16/logger.txt")
             //    .CreateLogger();
 
-            var fromMailAddress = new MailAddress("Test42Test42Test42Test42Test@gmail.com", "CRM");
+            var fromMailAddress = new MailAddress(options.Value.FromEmail, options.Value.DisplayName);
             foreach (var toAddress in emailDto.MailAddresses)
             {
                 using (var mailMessage = new MailMessage(fromMailAddress, toAddress))
@@ -23,12 +25,12 @@ namespace EmailWorker.Service
 
                     mailMessage.Subject = emailDto.Subject;
                     mailMessage.Body = emailDto.Body;
-                    smtpClient.Host = "smtp.gmail.com";
-                    smtpClient.Port = 587;
+                    smtpClient.Host = options.Value.Host;
+                    smtpClient.Port = options.Value.Port;
                     smtpClient.EnableSsl = true;
                     smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
                     smtpClient.UseDefaultCredentials = false;
-                    smtpClient.Credentials = new NetworkCredential(fromMailAddress.Address, "EMailSenderTest42");
+                    smtpClient.Credentials = new NetworkCredential(fromMailAddress.Address, options.Value.Password);
                     smtpClient.Send(mailMessage);
                 }
             }

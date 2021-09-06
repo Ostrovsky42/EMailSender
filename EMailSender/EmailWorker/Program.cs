@@ -1,4 +1,5 @@
 using EmailWorker.Service;
+using EmailWorker.Settings;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -15,6 +16,7 @@ namespace EmailWorker
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
+                    services.AddOptions<ConnSettings>();
                     services.AddTransient<IEMailSenderService, EMailSenderService>();
                     services.AddHostedService<Worker>();
                 });
