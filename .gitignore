@@ -16,6 +16,7 @@ nupkg/
 *.user
 *.userosscache
 *.sln.docstates
+**/Properties/launchSettings.json
 
 # Build results
 [Dd]ebug/
@@ -36,3 +37,5 @@ msbuild.wrn
 # Visual Studio 2015
 .vs/
 EMailSender/EMailSender/Properties/launchSettings.json
+
+EMailSender/SenderService/Properties/launchSettings.json
