@@ -16,11 +16,24 @@ namespace EmailWorker
     {
         private readonly ILogger<Worker> _logger;
         private readonly IOptions<EmailConfig> _options;
+        private int _timeSpan = 5000;
 
         public Worker(ILogger<Worker> logger, IOptions<EmailConfig> options)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _options = options ?? throw new ArgumentNullException(nameof(options));
+        }
+
+        public override async Task StartAsync(CancellationToken cancellationToken)
+        {
+            _logger.LogInformation($"Worker started at: {DateTime.Now}");
+            await base.StartAsync(cancellationToken);
+        }
+
+        public override async Task StopAsync(CancellationToken cancellationToken)
+        {
+            _logger.LogInformation($"Worker stopped at: {DateTime.Now}");
+            await base.StopAsync(cancellationToken);
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -33,8 +46,10 @@ namespace EmailWorker
                 {
                     var dto = new EmailDto
                     {
-                        MailAddresses = new List<MailAddress> {new MailAddress("zhekul.90@gmail.com")}
+                        MailAddresses = new List<MailAddress> { new MailAddress("zhekul.90@gmail.com") }
                     };
+                    dto.Subject = "Test";
+                    dto.Body = "Come over here!";
 
                     var service = new EMailSenderService(_options, _logger);
                     service.SendMail(dto);
@@ -42,10 +57,10 @@ namespace EmailWorker
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
-                    throw;
+                    _logger.LogError("throw Exception {e}", e);
                 }
 
-                await Task.Delay(5000, stoppingToken);
+                await Task.Delay(_timeSpan, stoppingToken);
             }
         }
     }

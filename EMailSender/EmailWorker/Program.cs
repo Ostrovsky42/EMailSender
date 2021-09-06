@@ -14,10 +14,24 @@ namespace EmailWorker
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                //.ConfigureAppConfiguration((hostingContext, config) =>
+                //{
+                //    var env = hostingContext.HostingEnvironment;
+
+                //    config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                //        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
+
+
+                //    config.Build();
+                //})
+                //.ConfigureHostConfiguration(builder =>
+                //{
+                //    builder.Build();
+                    
+                //})
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.Configure<EmailConfig>(hostContext.Configuration.GetSection("Email"));
-
+                    services.Configure<EmailConfig>(hostContext.Configuration.GetSection("Gmail"));
                     services.AddTransient<IEMailSenderService, EMailSenderService>();
                     services.AddHostedService<Worker>();
                 });
