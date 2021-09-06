@@ -1,11 +1,8 @@
+using EMailSenderService.Service;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace SenderService
+namespace EMailSenderService
 {
     public class Program
     {
@@ -18,6 +15,7 @@ namespace SenderService
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
+                    services.AddScoped<IEMailSenderService, Service.EMailSenderService>();
                     services.AddHostedService<Worker>();
                 });
     }

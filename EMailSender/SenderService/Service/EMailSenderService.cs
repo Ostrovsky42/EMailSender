@@ -1,12 +1,12 @@
 ﻿using System.Net;
 using System.Net.Mail;
-using EMailSender.Models;
+using EMailSenderService.Models;
 using Serilog;
 using Serilog.Formatting.Compact;
 
-namespace EMailSender.Implementation
+namespace EMailSenderService.Service
 {
-    public class EMailSenderService
+    public class EMailSenderService : IEMailSenderService
     {
         public void SendMail(EmailDto emailDto)
         {

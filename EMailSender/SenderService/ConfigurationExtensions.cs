@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
-using System;
+﻿using System;
+using Microsoft.Extensions.Configuration;
 
-namespace SenderService
+namespace EMailSenderService
 {
     public static class ConfigurationExtensions
     {

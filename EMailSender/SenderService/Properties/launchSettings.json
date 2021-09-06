@@ -1,5 +1,4 @@
 ﻿{
-
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
@@ -8,17 +7,17 @@
       "sslPort": 44304
     }
   },
-  "$schema": "http://json.schemastore.org/launchsettings.json",
   "profiles": {
     "EMailSender(Gmail)": {
       "commandName": "EMailSender",
-      "launchBrowser": false,
+      "launchBrowser": true,
+      "applicationUrl": "http://localhost:5000",
       "environmentVariables": {
-        "Host": "smtp.gmail.com",
-        "Port": "587",
-        "FromEmail": "Test42Test42Test42Test42Test@gmail.com",
-        "Password": "EMailSenderTest42",
-        "DisplayName": "CRM"
+        "HOST": "smtp.gmail.com",
+        "PORT": "587",
+        "FROM_EMAIL": "Test42Test42Test42Test42Test@gmail.com",
+        "PASSWORD": "EMailSenderTest42",
+        "DISPLAY_NAME": "CRM"
       }
     }
   }

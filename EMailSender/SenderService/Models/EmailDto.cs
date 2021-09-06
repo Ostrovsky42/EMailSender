@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Net.Mail;
 
-namespace EMailSender.Models
+namespace EMailSenderService.Models
 {
     public class EmailDto   
     {       

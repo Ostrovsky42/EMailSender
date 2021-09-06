@@ -1,11 +1,11 @@
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
-namespace SenderService
+namespace EMailSenderService
 {
     public class Worker : BackgroundService
     {
@@ -19,7 +19,9 @@ namespace SenderService
             Configuration = builder.Build();
             Configuration.SetEnvironmentVariableForConfiguration();
         }
+
         public IConfiguration Configuration { get; }
+
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             while (!stoppingToken.IsCancellationRequested)
