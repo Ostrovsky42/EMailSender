@@ -16,7 +16,8 @@ namespace EmailWorker
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddOptions<ConnSettings>();
+                    services.Configure<EmailConfig>(hostContext.Configuration.GetSection("Email"));
+
                     services.AddTransient<IEMailSenderService, EMailSenderService>();
                     services.AddHostedService<Worker>();
                 });

@@ -1,6 +1,6 @@
 ﻿namespace EmailWorker.Settings
 {
-    public class ConnSettings
+    public class EmailConfig
     {
         public string Host { get; set; }
         public int Port { get; set; }
