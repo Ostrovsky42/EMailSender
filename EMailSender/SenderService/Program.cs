@@ -1,6 +1,7 @@
 using EMailSenderService.Service;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace EMailSenderService
 {
@@ -15,8 +16,13 @@ namespace EMailSenderService
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddScoped<IEMailSenderService, Service.EMailSenderService>();
+                    services.AddTransient<IEMailSenderService, Service.EMailSenderService>();
                     services.AddHostedService<Worker>();
+                })
+                .ConfigureLogging(logging =>
+                {
+                    logging.ClearProviders();
+                    logging.AddConsole();
                 });
     }
 }
