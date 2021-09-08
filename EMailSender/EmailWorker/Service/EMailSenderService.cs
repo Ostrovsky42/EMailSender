@@ -21,7 +21,7 @@ namespace EmailWorker.Service
 
         public void SendMail(EmailDto emailDto)
         {
-            var fromMailAddress = new MailAddress(_config.FromEmail, _config.DisplayName);
+            var fromMailAddress = new MailAddress(_config.FromMailAddress, _config.DisplayName);
             foreach (var toAddress in emailDto.MailAddresses)
             {
                 using (var mailMessage = new MailMessage(fromMailAddress, toAddress))
