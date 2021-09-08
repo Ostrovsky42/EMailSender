@@ -3,8 +3,12 @@ using EmailWorker.Settings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using RatesApi.Extensions;
 using System.IO;
+using MassTransit;
+using EmailWorker.Extensions;
+using EmailWorker.Models;
+
+
 
 namespace EmailWorker
 {
@@ -29,6 +33,18 @@ namespace EmailWorker
                     services.AddOptions<EmailConfig>().Bind(configuration.GetSection("Gmail"));
                     services.AddTransient<IEMailSenderService, EMailSenderService>();
                     services.AddHostedService<Worker>();
+
+                    services.AddMassTransit(x =>
+                    {
+                        x.AddConsumer<EmailConsumer>();
+                        x.SetKebabCaseEndpointNameFormatter();
+                        x.UsingRabbitMq((context, cfg) =>
+                        {
+                            cfg.ConfigureEndpoints(context);
+                        });
+                    });
+                    services.AddMassTransitHostedService();
                 });
+
     }
 }

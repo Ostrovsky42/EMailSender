@@ -44,12 +44,20 @@ namespace EmailWorker
 
                 try
                 {
-                    var dto = new EmailDto
+                    EmailDto dto = new EmailDto
                     {
-                        Subject = "Test",
-                        Body = "Come over here!",
-                        MailAddresses = new List<MailAddress> { new("zhekul.90@gmail.com") }
+                       // Body = //context.Message.Body,
+                       // Subject = context.Message.Subject,
+                        //Body = context.Message.Body
+                        //Body = context.Message.Body
                     };
+                    //var dto = new EmailDto
+                    //{
+                    //    Subject = "Test",
+                    //    Body = "Come over here!",
+                    //    MailAddresses = new List<MailAddress> { new("zhekul.90@gmail.com") }
+                    //};
+
 
                     var service = new EMailSenderService(_options, _logger);
                     service.SendMail(dto);

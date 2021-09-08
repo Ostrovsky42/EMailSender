@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System;
 
-namespace RatesApi.Extensions
+namespace EmailWorker.Extensions
 {
     public static class ConfigurationExtensions
     {
