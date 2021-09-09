@@ -1,12 +1,8 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Net.Mail;
 using System.Threading;
 using System.Threading.Tasks;
-using EmailWorker.Models;
-using EmailWorker.Service;
 using EmailWorker.Settings;
 using Microsoft.Extensions.Options;
 
@@ -41,32 +37,6 @@ namespace EmailWorker
             while (!stoppingToken.IsCancellationRequested)
             {
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-
-                try
-                {
-                    EmailDto dto = new EmailDto
-                    {
-                       // Body = //context.Message.Body,
-                       // Subject = context.Message.Subject,
-                        //Body = context.Message.Body
-                        //Body = context.Message.Body
-                    };
-                    //var dto = new EmailDto
-                    //{
-                    //    Subject = "Test",
-                    //    Body = "Come over here!",
-                    //    MailAddresses = new List<MailAddress> { new("zhekul.90@gmail.com") }
-                    //};
-
-
-                    var service = new EMailSenderService(_options, _logger);
-                    service.SendMail(dto);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    _logger.LogError("throw Exception {e}", e);
-                }
 
                 await Task.Delay(_timeSpan, stoppingToken);
             }

@@ -1,10 +1,11 @@
 ﻿using MassTransit;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
+using EventContracts;
 
 namespace EmailWorker.Models
 {
-    class EmailConsumer: IConsumer<EmailDto>
+    class EmailConsumer : IConsumer<QueueMail>
     {
         ILogger<EmailConsumer> _logger;
 
@@ -13,9 +14,12 @@ namespace EmailWorker.Models
             _logger = logger;
         }
 
-        public async Task Consume(ConsumeContext<EmailDto> context)
-        {           
-            _logger.LogInformation("Value: {Value}", context.Message.Subject);
+        public async Task Consume(ConsumeContext<QueueMail> context)
+        {
+
+            _logger.LogInformation("Value: {Value}", context.Message);
+
+            await Task.CompletedTask;
         }
     }
 }
