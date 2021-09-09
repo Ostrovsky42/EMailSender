@@ -19,19 +19,30 @@ namespace ConsoleEventPublisher
             {
                 while (true)
                 {
-                    var value = await Task.Run(() =>
+                    var amount = await Task.Run(() =>
                     {
-                        Console.WriteLine("Enter message (or quit to exit)");
+                        Console.WriteLine("Enter amount (or quit to exit)");
                         Console.Write("> ");
                         return Console.ReadLine();
                     });
 
-                    if ("quit".Equals(value, StringComparison.OrdinalIgnoreCase))
+                    if ("quit".Equals(amount, StringComparison.OrdinalIgnoreCase))
                         break;
 
-                    await busControl.Publish<QueueMail>(new
+                    var mailAddresses = await Task.Run(() =>
                     {
-                        Value = value
+                        Console.WriteLine("Enter mailAddresses (or quit to exit)");
+                        Console.Write("> ");
+                        return Console.ReadLine();
+                    });
+
+                    if ("quit".Equals(mailAddresses, StringComparison.OrdinalIgnoreCase))
+                        break;
+
+                    await busControl.Publish<QueueMailDeposit>(new
+                    {
+                        Amount = amount,
+                        MailAddresses = mailAddresses
                     });
                 }
             }

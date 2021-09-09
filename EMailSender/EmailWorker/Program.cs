@@ -1,23 +1,19 @@
-using System;
 using System.IO;
-using System.Threading.Tasks;
 using EmailWorker;
 using EmailWorker.Extensions;
 using EmailWorker.Models;
 using EmailWorker.Service;
 using EmailWorker.Settings;
-using EventContracts;
 using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace AspNetCoreListener
 {
     public class Program
     {
-        private const string _queue = "queue-mail";
+        private const string _queue = "queue-mail-deposit";
         private const string _sectionKey = "Gmail";
 
         public static void Main(string[] args)
