@@ -1,6 +1,6 @@
 ﻿namespace EventContracts
 {
-    public interface QueueMailDeposit
+    public interface QueueMailTransaction
     {
         public string Amount { get; set; }
         public string MailAddresses { get; set; }

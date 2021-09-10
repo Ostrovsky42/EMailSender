@@ -1,5 +1,4 @@
 using System.IO;
-using EmailWorker;
 using EmailWorker.Extensions;
 using EmailWorker.Models;
 using EmailWorker.Service;
@@ -9,11 +8,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace AspNetCoreListener
+namespace EmailWorker
 {
     public class Program
     {
-        private const string _queue = "queue-mail-deposit";
+        private const string _queue = "queue-mail-transaction";
         private const string _sectionKey = "Gmail";
 
         public static void Main(string[] args)

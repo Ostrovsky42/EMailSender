@@ -8,20 +8,20 @@ using EventContracts;
 
 namespace EmailWorker.Models
 {
-    class EmailConsumer : IConsumer<QueueMailDeposit>
+    class EmailConsumer : IConsumer<QueueMailTransaction>
     {
         ILogger<EmailConsumer> _logger;
-        private readonly EMailSenderService _service;
+        private readonly IEMailSenderService _service;
         private EmailDto _dto;
 
-        public EmailConsumer(ILogger<EmailConsumer> logger)
+        public EmailConsumer(ILogger<EmailConsumer> logger, IEMailSenderService service)
         {
             _logger = logger;
             _dto = new EmailDto();
-
+            _service = service;
         }
 
-        public async Task Consume(ConsumeContext<QueueMailDeposit> context)
+        public async Task Consume(ConsumeContext<QueueMailTransaction> context)
         {
             _dto.MailAddresses = new List<MailAddress> {new($"{context.Message.MailAddresses}")};
             _dto.Amount = context.Message.Amount;

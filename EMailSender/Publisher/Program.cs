@@ -39,7 +39,7 @@ namespace ConsoleEventPublisher
                     if ("quit".Equals(mailAddresses, StringComparison.OrdinalIgnoreCase))
                         break;
 
-                    await busControl.Publish<QueueMailDeposit>(new
+                    await busControl.Publish<QueueMailTransaction>(new
                     {
                         Amount = amount,
                         MailAddresses = mailAddresses
