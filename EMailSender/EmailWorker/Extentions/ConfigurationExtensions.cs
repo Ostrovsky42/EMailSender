@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
-using System;
+﻿using System;
+using Microsoft.Extensions.Configuration;
 
-namespace EmailWorker.Extensions
+namespace EmailWorker.Extentions
 {
     public static class ConfigurationExtensions
     {

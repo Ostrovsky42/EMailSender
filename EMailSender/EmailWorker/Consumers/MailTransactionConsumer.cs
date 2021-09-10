@@ -9,13 +9,13 @@ using Microsoft.Extensions.Logging;
 
 namespace EmailWorker.Consumers
 {
-    class EmailConsumer : IConsumer<MailTransactionExchangeModel>
+    class MailTransactionConsumer : IConsumer<MailTransactionExchangeModel>
     {
-        ILogger<EmailConsumer> _logger;
+        ILogger<MailTransactionConsumer> _logger;
         private readonly IEMailSenderService _service;
         private EmailDto _dto;
 
-        public EmailConsumer(ILogger<EmailConsumer> logger, IEMailSenderService service)
+        public MailTransactionConsumer(ILogger<MailTransactionConsumer> logger, IEMailSenderService service)
         {
             _logger = logger;
             _dto = new EmailDto();

@@ -1,6 +1,6 @@
 using System.IO;
 using EmailWorker.Consumers;
-using EmailWorker.Extensions;
+using EmailWorker.Extentions;
 using EmailWorker.Service;
 using EmailWorker.Settings;
 using MassTransit;
@@ -12,7 +12,8 @@ namespace EmailWorker
 {
     public class Program
     {
-        private const string _queue = "queue-mail-transaction";
+        private const string _queueTransaction = "queue-mail-transaction";
+        private const string _queueAdmin = "queue-mail-admin";
         private const string _sectionKey = "Gmail";
 
         public static void Main(string[] args)
@@ -37,13 +38,18 @@ namespace EmailWorker
 
                     services.AddMassTransit(x =>
                     {
-                        x.AddConsumer<EmailConsumer>();
+                        x.AddConsumer<MailTransactionConsumer>();
+                        x.AddConsumer<MailAdminConsumer>();
                         x.SetKebabCaseEndpointNameFormatter();
                         x.UsingRabbitMq((context, cfg) =>
                         {
-                            cfg.ReceiveEndpoint(_queue, e =>
+                            cfg.ReceiveEndpoint(_queueTransaction, e =>
                             {
-                                e.ConfigureConsumer<EmailConsumer>(context);
+                                e.ConfigureConsumer<MailTransactionConsumer>(context);
+                            });
+                            cfg.ReceiveEndpoint(_queueAdmin, e =>
+                            {
+                                e.ConfigureConsumer<MailAdminConsumer>(context);
                             });
                         });
                     });
