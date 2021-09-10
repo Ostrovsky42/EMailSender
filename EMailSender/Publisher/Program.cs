@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using MailTransaction;
 using MassTransit;
 
-namespace ConsoleEventPublisher
+namespace Publisher
 {
     public class Program
     {
