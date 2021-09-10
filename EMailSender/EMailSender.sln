@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31612.314
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31613.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmailWorker", "EmailWorker\EmailWorker.csproj", "{BC85A1B9-693B-4F25-987C-A7A7B5289A5B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Publisher", "Publisher\Publisher.csproj", "{7A763608-0B63-4F80-A2A3-B0E9FBCA8FB0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{BC85A1B9-693B-4F25-987C-A7A7B5289A5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC85A1B9-693B-4F25-987C-A7A7B5289A5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC85A1B9-693B-4F25-987C-A7A7B5289A5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A763608-0B63-4F80-A2A3-B0E9FBCA8FB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A763608-0B63-4F80-A2A3-B0E9FBCA8FB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A763608-0B63-4F80-A2A3-B0E9FBCA8FB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A763608-0B63-4F80-A2A3-B0E9FBCA8FB0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
