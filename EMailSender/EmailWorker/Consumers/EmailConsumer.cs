@@ -3,13 +3,13 @@ using System.Net.Mail;
 using System.Threading.Tasks;
 using EmailWorker.Models;
 using EmailWorker.Service;
-using EventContracts;
+using MailTransaction;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 
 namespace EmailWorker.Consumers
 {
-    class EmailConsumer : IConsumer<QueueMailTransaction>
+    class EmailConsumer : IConsumer<MailTransactionExchangeModel>
     {
         ILogger<EmailConsumer> _logger;
         private readonly IEMailSenderService _service;
@@ -22,13 +22,13 @@ namespace EmailWorker.Consumers
             _service = service;
         }
 
-        public async Task Consume(ConsumeContext<QueueMailTransaction> context)
+        public async Task Consume(ConsumeContext<MailTransactionExchangeModel> context)
         {
+            _logger.LogInformation("Value: {Value}", context.Message);
+
             _dto.MailAddresses = new List<MailAddress> {new($"{context.Message.MailAddresses}")};
             _dto.Amount = context.Message.Amount;
             _service.SendMail(_dto);
-
-            _logger.LogInformation("Value: {Value}", context.Message);
 
             await Task.CompletedTask;
         }
