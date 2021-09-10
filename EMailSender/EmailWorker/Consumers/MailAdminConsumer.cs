@@ -24,15 +24,15 @@ namespace EmailWorker.Consumers
 
         public async Task Consume(ConsumeContext<MailAdminExchangeModel> context)
         {
-            _logger.LogInformation("MailTo: [{m}], Subject: [{s}], Body: [{b}], ", 
-                context.Message.MailTo, context.Message.Subject, context.Message.Body);
+            _logger.LogInformation($"context.MailTo: [{context.Message.MailTo}], " +
+                                   $"context.Subject: [{context.Message.Subject}], " +
+                                   $"context.Body: [{context.Message.Body}], "); 
 
             _dto.MailAddresses = new List<MailAddress> { new($"{context.Message.MailTo}") };
             _dto.Subject = context.Message.Subject;
             _dto.Body = context.Message.Body;
 
             _service.SendMail(_dto);
-
             await Task.CompletedTask;
         }
     }

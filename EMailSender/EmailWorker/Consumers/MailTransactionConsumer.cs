@@ -24,12 +24,13 @@ namespace EmailWorker.Consumers
 
         public async Task Consume(ConsumeContext<MailTransactionExchangeModel> context)
         {
-            _logger.LogInformation("Value: {Value}", context.Message);
+            _logger.LogInformation($"context.MailAddresses: [{context.Message.MailAddresses}], " +
+                                   $"context.Amount: [{context.Message.Amount}], ");
 
             _dto.MailAddresses = new List<MailAddress> {new($"{context.Message.MailAddresses}")};
             _dto.Amount = context.Message.Amount;
+            
             _service.SendMail(_dto);
-
             await Task.CompletedTask;
         }
     }
