@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using EventContracts;
+using MailTransaction;
 using MassTransit;
 
-namespace ConsoleEventPublisher
+namespace Publisher
 {
     public class Program
     {
@@ -39,7 +39,7 @@ namespace ConsoleEventPublisher
                     if ("quit".Equals(mailAddresses, StringComparison.OrdinalIgnoreCase))
                         break;
 
-                    await busControl.Publish<QueueMailTransaction>(new
+                    await busControl.Publish<MailTransactionExchangeModel>(new
                     {
                         Amount = amount,
                         MailAddresses = mailAddresses

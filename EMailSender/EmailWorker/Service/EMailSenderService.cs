@@ -27,9 +27,6 @@ namespace EmailWorker.Service
                 using (var mailMessage = new MailMessage(fromMailAddress, toAddress))
                 using (var smtpClient = new SmtpClient())
                 {
-                    _logger.LogInformation("Write body:[{emailDto.Body}] with Subject:[{emailDto.Subject}] to [{toAddress}] from [{fromMailAddress.Address}] at {time}"
-                        ,emailDto.Body, emailDto.Subject, toAddress, fromMailAddress.Address, DateTimeOffset.Now);
-
                     mailMessage.Subject = emailDto.Subject;
                     mailMessage.Body = emailDto.Body;
                     smtpClient.Host = _config.Host;
@@ -38,7 +35,10 @@ namespace EmailWorker.Service
                     smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
                     smtpClient.UseDefaultCredentials = false;
                     smtpClient.Credentials = new NetworkCredential(fromMailAddress.Address, _config.Password);
+                    
                     smtpClient.Send(mailMessage);
+
+                    _logger.LogInformation($"Send to [{toAddress}] from [{fromMailAddress.Address}], body:[{emailDto.Body}] with Subject:[{emailDto.Subject}] at {DateTimeOffset.Now}");
                 }
             }
         }
