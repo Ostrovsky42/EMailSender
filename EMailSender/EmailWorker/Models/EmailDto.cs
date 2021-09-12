@@ -7,7 +7,7 @@ namespace EmailWorker.Models
     {       
         public string Subject { get; set; }
         public string Body { get; set; }
-        public string From { get; set; }
+        public string DisplayName { get; set; }
         public List<MailAddress> MailAddresses { get; set; }
         public bool IsBodyHtml { get; set; }
     }

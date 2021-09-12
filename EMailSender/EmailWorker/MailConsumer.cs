@@ -24,9 +24,6 @@ namespace EmailWorker.Consumers
 
         public async Task Consume(ConsumeContext<MailExchangeModel> context)
         {
-            _logger.LogInformation($"context.MailAddresses: [{context.Message.MailAddresses}], " +
-                                   $"context.Amount: [{context.Message.Amount}], ");
-            
             _dto.MailAddresses = new List<MailAddress> {new($"{context.Message.MailAddresses}")};
             
             _service.SendMail(_dto);
