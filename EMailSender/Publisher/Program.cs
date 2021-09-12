@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using MailTransaction;
+using MailExchange;
 using MassTransit;
 
 namespace Publisher
@@ -22,14 +22,14 @@ namespace Publisher
                     var subject = await getConsoleText("subject");
                     var body = await getConsoleText("body");
                     var displayName = await getConsoleText("displayName");
-                    var listMailAddresses = await getConsoleText("listMailAddresses");
+                    var mailAddresses = await getConsoleText("MailAddresses");
 
-                    await busControl.Publish<MailExchangeModel>(new
+                    await busControl.Publish<IMailExchangeModel>(new
                     {
                         Subject = subject,
                         Body = body,
                         DisplayName = displayName,
-                        ListMailAddresses = listMailAddresses
+                        MailAddresses = mailAddresses
                     });
                 }
             }

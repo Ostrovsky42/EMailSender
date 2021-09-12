@@ -1,5 +1,4 @@
 using System.IO;
-using EmailWorker.Consumers;
 using EmailWorker.Extentions;
 using EmailWorker.Service;
 using EmailWorker.Settings;

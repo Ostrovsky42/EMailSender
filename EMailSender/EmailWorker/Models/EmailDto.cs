@@ -3,8 +3,8 @@ using System.Net.Mail;
 
 namespace EmailWorker.Models
 {
-    public class EmailDto   
-    {       
+    public class EmailDto
+    {
         public string Subject { get; set; }
         public string Body { get; set; }
         public string DisplayName { get; set; }
