@@ -9,26 +9,25 @@ using Microsoft.Extensions.Logging;
 
 namespace EmailWorker.Consumers
 {
-    class MailTransactionConsumer : IConsumer<MailTransactionExchangeModel>
+    class MailConsumer : IConsumer<MailExchangeModel>
     {
-        ILogger<MailTransactionConsumer> _logger;
+        ILogger<MailConsumer> _logger;
         private readonly IEMailSenderService _service;
         private EmailDto _dto;
 
-        public MailTransactionConsumer(ILogger<MailTransactionConsumer> logger, IEMailSenderService service)
+        public MailConsumer(ILogger<MailConsumer> logger, IEMailSenderService service)
         {
             _logger = logger;
             _dto = new EmailDto();
             _service = service;
         }
 
-        public async Task Consume(ConsumeContext<MailTransactionExchangeModel> context)
+        public async Task Consume(ConsumeContext<MailExchangeModel> context)
         {
             _logger.LogInformation($"context.MailAddresses: [{context.Message.MailAddresses}], " +
                                    $"context.Amount: [{context.Message.Amount}], ");
-
+            
             _dto.MailAddresses = new List<MailAddress> {new($"{context.Message.MailAddresses}")};
-            _dto.Amount = context.Message.Amount;
             
             _service.SendMail(_dto);
             await Task.CompletedTask;

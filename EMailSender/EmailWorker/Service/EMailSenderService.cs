@@ -38,7 +38,7 @@ namespace EmailWorker.Service
                     
                     smtpClient.Send(mailMessage);
 
-                    _logger.LogInformation($"Send to [{toAddress}] from [{fromMailAddress.Address}], body:[{emailDto.Body}] with Subject:[{emailDto.Subject}] at {DateTimeOffset.Now}");
+                    _logger.LogInformation($"Send(mailMessage) to [{toAddress}] from [{fromMailAddress.Address}], body:[{emailDto.Body}] with Subject:[{emailDto.Subject}] at {DateTimeOffset.Now}");
                 }
             }
         }

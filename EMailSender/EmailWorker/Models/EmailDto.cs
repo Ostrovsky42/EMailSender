@@ -9,7 +9,6 @@ namespace EmailWorker.Models
         public string Body { get; set; }
         public string From { get; set; }
         public List<MailAddress> MailAddresses { get; set; }
-        public string Amount { get; set; }
         public bool IsBodyHtml { get; set; }
     }
 }

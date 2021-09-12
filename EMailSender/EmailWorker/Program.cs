@@ -12,8 +12,7 @@ namespace EmailWorker
 {
     public class Program
     {
-        private const string _queueTransaction = "queue-mail-transaction";
-        private const string _queueAdmin = "queue-mail-admin";
+        private const string _queueTransaction = "queue-mail";
         private const string _sectionKey = "Gmail";
 
         public static void Main(string[] args)
@@ -30,7 +29,7 @@ namespace EmailWorker
 
         public static IHostBuilder CreateHostBuilder(string[] args, IConfiguration configuration) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureServices((hostContext, services) =>
+                .ConfigureServices(services =>
                 {
                     services.AddOptions<EmailConfig>().Bind(configuration.GetSection(_sectionKey));
                     services.AddTransient<IEMailSenderService, EMailSenderService>();
@@ -38,18 +37,13 @@ namespace EmailWorker
 
                     services.AddMassTransit(x =>
                     {
-                        x.AddConsumer<MailTransactionConsumer>();
-                        x.AddConsumer<MailAdminConsumer>();
+                        x.AddConsumer<MailConsumer>();
                         x.SetKebabCaseEndpointNameFormatter();
                         x.UsingRabbitMq((context, cfg) =>
                         {
                             cfg.ReceiveEndpoint(_queueTransaction, e =>
                             {
-                                e.ConfigureConsumer<MailTransactionConsumer>(context);
-                            });
-                            cfg.ReceiveEndpoint(_queueAdmin, e =>
-                            {
-                                e.ConfigureConsumer<MailAdminConsumer>(context);
+                                e.ConfigureConsumer<MailConsumer>(context);
                             });
                         });
                     });

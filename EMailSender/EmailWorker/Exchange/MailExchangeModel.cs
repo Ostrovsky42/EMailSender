@@ -1,6 +1,6 @@
 ﻿namespace MailTransaction
 {
-    public interface MailTransactionExchangeModel
+    public interface MailExchangeModel
     {
         public string Amount { get; set; }
         public string MailAddresses { get; set; }
