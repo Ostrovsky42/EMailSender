@@ -1,14 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Net.Mail;
-
-namespace EmailWorker.Models
+﻿namespace MailExchange
 {
-    public class EmailDto
+    public interface IMailExchangeModel
     {
         public string Subject { get; set; }
         public string Body { get; set; }
         public string DisplayName { get; set; }
-        public List<MailAddress> MailAddresses { get; set; }
+        public string MailAddresses { get; set; }
         public bool IsBodyHtml { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using MailTransaction;
+using MailExchange;
 using MassTransit;
 
 namespace Publisher
@@ -19,29 +19,16 @@ namespace Publisher
             {
                 while (true)
                 {
-                    var amount = await Task.Run(() =>
+                    var subject = await getConsoleText("subject");
+                    var body = await getConsoleText("body");
+                    var displayName = await getConsoleText("displayName");
+                    var mailAddresses = await getConsoleText("MailAddresses");
+
+                    await busControl.Publish<IMailExchangeModel>(new
                     {
-                        Console.WriteLine("Enter amount (or quit to exit)");
-                        Console.Write("> ");
-                        return Console.ReadLine();
-                    });
-
-                    if ("quit".Equals(amount, StringComparison.OrdinalIgnoreCase))
-                        break;
-
-                    var mailAddresses = await Task.Run(() =>
-                    {
-                        Console.WriteLine("Enter mailAddresses (or quit to exit)");
-                        Console.Write("> ");
-                        return Console.ReadLine();
-                    });
-
-                    if ("quit".Equals(mailAddresses, StringComparison.OrdinalIgnoreCase))
-                        break;
-
-                    await busControl.Publish<MailTransactionExchangeModel>(new
-                    {
-                        Amount = amount,
+                        Subject = subject,
+                        Body = body,
+                        DisplayName = displayName,
                         MailAddresses = mailAddresses
                     });
                 }
@@ -50,6 +37,16 @@ namespace Publisher
             {
                 await busControl.StopAsync();
             }
+        }
+
+        private static async Task<string> getConsoleText(string text)
+        {
+            return await Task.Run(() =>
+            {
+                Console.WriteLine($"Enter { text} (or quit to exit)");
+                Console.Write("> ");
+                return Console.ReadLine();
+            });
         }
     }
 }

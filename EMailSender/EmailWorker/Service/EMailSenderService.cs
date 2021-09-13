@@ -21,7 +21,7 @@ namespace EmailWorker.Service
 
         public void SendMail(EmailDto emailDto)
         {
-            var fromMailAddress = new MailAddress(_config.FromMailAddress, _config.DisplayName);
+            var fromMailAddress = new MailAddress(_config.FromMailAddress, emailDto.DisplayName);
             foreach (var toAddress in emailDto.MailAddresses)
             {
                 using (var mailMessage = new MailMessage(fromMailAddress, toAddress))
@@ -38,7 +38,7 @@ namespace EmailWorker.Service
                     
                     smtpClient.Send(mailMessage);
 
-                    _logger.LogInformation($"Send to [{toAddress}] from [{fromMailAddress.Address}], body:[{emailDto.Body}] with Subject:[{emailDto.Subject}] at {DateTimeOffset.Now}");
+                    _logger.LogInformation($"Send(mailMessage) to [{toAddress}] from [{fromMailAddress.Address}], body:[{emailDto.Body}] with Subject:[{emailDto.Subject}] at {DateTimeOffset.Now}");
                 }
             }
         }
