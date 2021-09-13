@@ -6,6 +6,7 @@ using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 
 namespace EmailWorker
 {
@@ -16,6 +17,12 @@ namespace EmailWorker
 
         public static void Main(string[] args)
         {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.File("EmailSenderLogger")
+                 .CreateLogger();
+            Log.Information("Logger create!");
+
             var configuration = CreateConfiguratuion();
             configuration.SetEnvironmentVariableForConfiguration();
             CreateHostBuilder(args, configuration).Build().Run();
@@ -28,6 +35,7 @@ namespace EmailWorker
 
         public static IHostBuilder CreateHostBuilder(string[] args, IConfiguration configuration) =>
             Host.CreateDefaultBuilder(args)
+                .UseWindowsService()
                 .ConfigureServices(services =>
                 {
                     services.AddOptions<EmailConfig>().Bind(configuration.GetSection(_sectionKey));

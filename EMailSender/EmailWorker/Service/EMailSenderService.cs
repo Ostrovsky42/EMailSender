@@ -3,20 +3,18 @@ using System.Net;
 using System.Net.Mail;
 using EmailWorker.Models;
 using EmailWorker.Settings;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Serilog;
 
 namespace EmailWorker.Service
 {
     public class EMailSenderService : IEMailSenderService
     {
         private readonly EmailConfig _config;
-        private readonly ILogger<Worker> _logger;
 
-        public EMailSenderService(IOptions<EmailConfig> options, ILogger<Worker> logger)
+        public EMailSenderService(IOptions<EmailConfig> options)
         {
             _config = options.Value;
-            _logger = logger;
         }
 
         public void SendMail(EmailDto emailDto)
@@ -37,8 +35,7 @@ namespace EmailWorker.Service
                     smtpClient.Credentials = new NetworkCredential(fromMailAddress.Address, _config.Password);
                     
                     smtpClient.Send(mailMessage);
-
-                    _logger.LogInformation($"Send(mailMessage) to [{toAddress}] from [{fromMailAddress.Address}], body:[{emailDto.Body}] with Subject:[{emailDto.Subject}] at {DateTimeOffset.Now}");
+                    Log.Information($"Send(mailMessage) to [{toAddress}] from [{fromMailAddress.Address}], body:[{emailDto.Body}] with Subject:[{emailDto.Subject}] at {DateTimeOffset.Now}");
                 }
             }
         }

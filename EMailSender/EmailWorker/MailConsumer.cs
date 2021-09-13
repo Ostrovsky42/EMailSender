@@ -5,19 +5,16 @@ using EmailWorker.Models;
 using EmailWorker.Service;
 using MailExchange;
 using MassTransit;
-using Microsoft.Extensions.Logging;
 
 namespace EmailWorker
 {
     internal class MailConsumer : IConsumer<IMailExchangeModel>
     {
-        private readonly ILogger<MailConsumer> _logger;
         private readonly IEMailSenderService _service;
         private EmailDto _dto;
 
-        public MailConsumer(ILogger<MailConsumer> logger, IEMailSenderService service)
+        public MailConsumer(IEMailSenderService service)
         {
-            _logger = logger;
             _dto = new EmailDto();
             _service = service;
         }
