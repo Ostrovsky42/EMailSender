@@ -12,16 +12,16 @@ namespace EmailWorker
 {
     public class Program
     {
-        private const string _queue = "queue-mail";
         private const string _sectionKey = "Gmail";
+        private const string _queue = "queue-mail";
+        private const string _path = @"C:\Services\EmailSender\Logs.txt";
 
         public static void Main(string[] args)
         {
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
-                .WriteTo.File("EmailSenderLogger")
+                .WriteTo.File(_path)
                  .CreateLogger();
-            Log.Information("Logger create!");
 
             var configuration = CreateConfiguratuion();
             configuration.SetEnvironmentVariableForConfiguration();
@@ -39,6 +39,7 @@ namespace EmailWorker
                 .ConfigureServices(services =>
                 {
                     services.AddOptions<EmailConfig>().Bind(configuration.GetSection(_sectionKey));
+                    services.AddOptions<RabbitMQConfig>().Bind(configuration.GetSection("RabbitMQ"));
                     services.AddTransient<IEMailSenderService, EMailSenderService>();
                     services.AddHostedService<Worker>();
 
@@ -48,6 +49,11 @@ namespace EmailWorker
                         x.SetKebabCaseEndpointNameFormatter();
                         x.UsingRabbitMq((context, cfg) =>
                         {
+                            cfg.Host("80.78.240.16", h =>
+                            {
+                                h.Username("nafanya");
+                                h.Password("qwe!23");
+                            });
                             cfg.ReceiveEndpoint(_queue, e =>
                             {
                                 e.ConfigureConsumer<MailConsumer>(context);

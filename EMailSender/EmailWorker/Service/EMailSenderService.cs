@@ -14,15 +14,15 @@ namespace EmailWorker.Service
 
         public EMailSenderService(IOptions<EmailConfig> options)
         {
-            _config = options.Value;
+            _config = options.Value ?? throw new Exception("options.Value was null");
         }
 
         public void SendMail(EmailDto emailDto)
         {
-            var fromMailAddress = new MailAddress(_config.FromMailAddress, emailDto.DisplayName);
-            foreach (var toAddress in emailDto.MailAddresses)
+            var fromMail = new MailAddress(_config.FromMailAddress, emailDto.DisplayName);
+            foreach (var toMail in emailDto.MailAddresses)
             {
-                using (var mailMessage = new MailMessage(fromMailAddress, toAddress))
+                using (var mailMessage = new MailMessage(fromMail, toMail))
                 using (var smtpClient = new SmtpClient())
                 {
                     mailMessage.Subject = emailDto.Subject;
@@ -32,10 +32,10 @@ namespace EmailWorker.Service
                     smtpClient.EnableSsl = true;
                     smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
                     smtpClient.UseDefaultCredentials = false;
-                    smtpClient.Credentials = new NetworkCredential(fromMailAddress.Address, _config.Password);
+                    smtpClient.Credentials = new NetworkCredential(fromMail.Address, _config.Password);
                     
                     smtpClient.Send(mailMessage);
-                    Log.Information($"Send(mailMessage) to [{toAddress}] from [{fromMailAddress.Address}], body:[{emailDto.Body}] with Subject:[{emailDto.Subject}] at {DateTimeOffset.Now}");
+                    Log.Information($"{DateTimeOffset.Now} Send(mailMessage) to [{toMail}] from [{fromMail.Address}], body:[{emailDto.Body}] with Subject:[{emailDto.Subject}]");
                 }
             }
         }

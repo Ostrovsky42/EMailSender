@@ -39,3 +39,5 @@ msbuild.wrn
 EMailSender/EMailSender/Properties/launchSettings.json
 
 EMailSender/SenderService/Properties/launchSettings.json
+
+EMailSender/EmailWorker/EmailSenderLogger
