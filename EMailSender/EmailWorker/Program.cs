@@ -12,7 +12,7 @@ namespace EmailWorker
 {
     public class Program
     {
-        private const string _queueTransaction = "queue-mail";
+        private const string _queue = "queue-mail";
         private const string _sectionKey = "Gmail";
 
         public static void Main(string[] args)
@@ -48,7 +48,7 @@ namespace EmailWorker
                         x.SetKebabCaseEndpointNameFormatter();
                         x.UsingRabbitMq((context, cfg) =>
                         {
-                            cfg.ReceiveEndpoint(_queueTransaction, e =>
+                            cfg.ReceiveEndpoint(_queue, e =>
                             {
                                 e.ConfigureConsumer<MailConsumer>(context);
                             });

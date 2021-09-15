@@ -10,7 +10,15 @@ namespace Publisher
     {
         public static async Task Main()
         {
-            var busControl = Bus.Factory.CreateUsingRabbitMq();
+            var busControl = Bus.Factory.CreateUsingRabbitMq(configure: cfg =>
+            {
+                // 5672 Основной порт RabbitMQ
+                cfg.Host("80.78.240.16", h =>
+                {
+                    h.Username("nafanya");
+                    h.Password("qwe!23");
+                });
+            });
 
             var source = new CancellationTokenSource(TimeSpan.FromSeconds(10));
 
@@ -19,17 +27,17 @@ namespace Publisher
             {
                 while (true)
                 {
-                    var subject = await getConsoleText("subject");
-                    var body = await getConsoleText("body");
-                    var displayName = await getConsoleText("displayName");
-                    var mailAddresses = await getConsoleText("MailAddresses");
+                    var subject = await GetConsoleText("subject");
+                    var body = await GetConsoleText("body");
+                    var displayName = await GetConsoleText("displayName");
+                    //var mailAddresses = await GetConsoleText("MailAddresses");
 
                     await busControl.Publish<IMailExchangeModel>(new
                     {
                         Subject = subject,
                         Body = body,
                         DisplayName = displayName,
-                        MailAddresses = mailAddresses
+                        MailAddresses = "zhekul.90@gmail.com"
                     });
                 }
             }
@@ -39,7 +47,7 @@ namespace Publisher
             }
         }
 
-        private static async Task<string> getConsoleText(string text)
+        private static async Task<string> GetConsoleText(string text)
         {
             return await Task.Run(() =>
             {
