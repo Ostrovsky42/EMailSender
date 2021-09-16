@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using static EmailWorker.EnviromentChecker;
 
 namespace EmailWorker
 {
@@ -15,19 +16,19 @@ namespace EmailWorker
     {
         private const string _sectionKey = "Gmail";
         private const string _queue = "queue-mail";
-        private static string _host;
-        private static string _password;
-        private static string _username;
-        private static string _path;
-
+        private static string _rabbitHost = "RABBITMQ_HOST";
+        private static string _rabbitPassword = "RABBITMQ_PASSWORD";
+        private static string _rabbitUsername = "RABBITMQ_USERNAME";
+        private static string _loggerPath = "LOGGER_PATH";     
+        
         public static void Main(string[] args)
         {
-            _path = Environment.GetEnvironmentVariable("LOGGER_PATH");           
+            var path = Environment.GetEnvironmentVariable(_loggerPath) ?? "C:\\Services\\EmailSender\\Logs.txt";
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
-                .WriteTo.File(_path)
+                .WriteTo.File(path)
                 .CreateLogger();
-
+            
             var configuration = CreateConfiguratuion();
             configuration.SetEnvironmentVariableForConfiguration();
             CreateHostBuilder(args, configuration).Build().Run();
@@ -43,14 +44,9 @@ namespace EmailWorker
                 .UseWindowsService()
                 .ConfigureServices(services =>
                 {
-                    services.AddOptions<EmailConfig>().Bind(configuration.GetSection(_sectionKey));
-                    services.AddOptions<RabbitMQConfig>().Bind(configuration.GetSection("RabbitMQ"));
+                    services.AddOptions<EmailConfig>().Bind(configuration.GetSection(_sectionKey));                    
                     services.AddTransient<IEMailSenderService, EMailSenderService>();
                     services.AddHostedService<Worker>();
-
-                    _host = Environment.GetEnvironmentVariable("RABBITMQ_HOST");
-                    _username = Environment.GetEnvironmentVariable("RABBITMQ_USERNAME");
-                    _password = Environment.GetEnvironmentVariable("RABBITMQ_PASSWORD");
 
                     services.AddMassTransit(x =>
                     {
@@ -58,10 +54,10 @@ namespace EmailWorker
                         x.SetKebabCaseEndpointNameFormatter();
                         x.UsingRabbitMq((context, cfg) =>
                         {
-                            cfg.Host(_host, h =>
+                            cfg.Host(CheckAndLogEnviroment(_rabbitHost), h =>
                             {
-                                h.Username(_username);
-                                h.Password(_password);
+                                h.Username(CheckAndLogEnviroment(_rabbitUsername));
+                                h.Password(CheckAndLogEnviroment(_rabbitPassword));
                             });
                             cfg.ReceiveEndpoint(_queue, e =>
                             {
