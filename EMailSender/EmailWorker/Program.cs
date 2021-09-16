@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using EmailWorker.Extentions;
 using EmailWorker.Service;
@@ -14,14 +15,18 @@ namespace EmailWorker
     {
         private const string _sectionKey = "Gmail";
         private const string _queue = "queue-mail";
-        private const string _path = @"C:\Services\EmailSender\Logs.txt";
+        private static string _host;
+        private static string _password;
+        private static string _username;
+        private static string _path;
 
         public static void Main(string[] args)
         {
+            _path = Environment.GetEnvironmentVariable("LOGGER_PATH");           
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
                 .WriteTo.File(_path)
-                 .CreateLogger();
+                .CreateLogger();
 
             var configuration = CreateConfiguratuion();
             configuration.SetEnvironmentVariableForConfiguration();
@@ -43,16 +48,20 @@ namespace EmailWorker
                     services.AddTransient<IEMailSenderService, EMailSenderService>();
                     services.AddHostedService<Worker>();
 
+                    _host = Environment.GetEnvironmentVariable("RABBITMQ_HOST");
+                    _username = Environment.GetEnvironmentVariable("RABBITMQ_USERNAME");
+                    _password = Environment.GetEnvironmentVariable("RABBITMQ_PASSWORD");
+
                     services.AddMassTransit(x =>
                     {
                         x.AddConsumer<MailConsumer>();
                         x.SetKebabCaseEndpointNameFormatter();
                         x.UsingRabbitMq((context, cfg) =>
                         {
-                            cfg.Host("80.78.240.16", h =>
+                            cfg.Host(_host, h =>
                             {
-                                h.Username("nafanya");
-                                h.Password("qwe!23");
+                                h.Username(_username);
+                                h.Password(_password);
                             });
                             cfg.ReceiveEndpoint(_queue, e =>
                             {
