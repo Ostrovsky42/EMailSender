@@ -5,11 +5,11 @@ namespace EmailWorker
 {
     public static class EnviromentChecker
     {
-       public static  string CheckAndLogEnviroment(string variable)
+        public static string GetkAndLogEnviromentVariable(string variableName)
         {
-            var enviroment = Environment.GetEnvironmentVariable(variable);
-            Log.Information($"Environment [{variable}]: [{enviroment}]");
-            return enviroment;
-        } 
+            var variable = Environment.GetEnvironmentVariable(variableName);
+            Log.Information($"Value of environment variable [{variableName}]: [{variable}]");
+            return variable;
+        }
     }
 }

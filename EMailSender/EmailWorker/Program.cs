@@ -19,16 +19,17 @@ namespace EmailWorker
         private static string _rabbitHost = "RABBITMQ_HOST";
         private static string _rabbitPassword = "RABBITMQ_PASSWORD";
         private static string _rabbitUsername = "RABBITMQ_USERNAME";
-        private static string _loggerPath = "LOGGER_PATH";     
-        
+        private static string _loggerPath = "LOGGER_PATH";
+        private static string _defaultLoggerPath = "C:\\Services\\EmailSender\\Logs.txt";
+
         public static void Main(string[] args)
         {
-            var path = Environment.GetEnvironmentVariable(_loggerPath) ?? "C:\\Services\\EmailSender\\Logs.txt";
+            var path = Environment.GetEnvironmentVariable(_loggerPath) ?? _defaultLoggerPath;
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
-                .WriteTo.File(path)
+                .WriteTo.File(path, rollingInterval: RollingInterval.Day)
                 .CreateLogger();
-            
+
             var configuration = CreateConfiguratuion();
             configuration.SetEnvironmentVariableForConfiguration();
             CreateHostBuilder(args, configuration).Build().Run();
@@ -36,7 +37,7 @@ namespace EmailWorker
 
         public static IConfiguration CreateConfiguratuion() =>
             new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
-                                      .AddJsonFile("appsettings.Development.json", optional: false, reloadOnChange: true)
+                                      .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                                       .Build();
 
         public static IHostBuilder CreateHostBuilder(string[] args, IConfiguration configuration) =>
@@ -44,7 +45,7 @@ namespace EmailWorker
                 .UseWindowsService()
                 .ConfigureServices(services =>
                 {
-                    services.AddOptions<EmailConfig>().Bind(configuration.GetSection(_sectionKey));                    
+                    services.AddOptions<EmailConfig>().Bind(configuration.GetSection(_sectionKey));
                     services.AddTransient<IEMailSenderService, EMailSenderService>();
                     services.AddHostedService<Worker>();
 
@@ -54,10 +55,10 @@ namespace EmailWorker
                         x.SetKebabCaseEndpointNameFormatter();
                         x.UsingRabbitMq((context, cfg) =>
                         {
-                            cfg.Host(CheckAndLogEnviroment(_rabbitHost), h =>
+                            cfg.Host(GetkAndLogEnviromentVariable(_rabbitHost), h =>
                             {
-                                h.Username(CheckAndLogEnviroment(_rabbitUsername));
-                                h.Password(CheckAndLogEnviroment(_rabbitPassword));
+                                h.Username(GetkAndLogEnviromentVariable(_rabbitUsername));
+                                h.Password(GetkAndLogEnviromentVariable(_rabbitPassword));
                             });
                             cfg.ReceiveEndpoint(_queue, e =>
                             {
