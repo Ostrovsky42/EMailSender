@@ -27,6 +27,7 @@ namespace EmailWorker.Service
                 {
                     mailMessage.Subject = emailDto.Subject;
                     mailMessage.Body = emailDto.Body;
+                    mailMessage.IsBodyHtml = emailDto.IsBodyHtml;
                     smtpClient.Host = _config.Host;
                     smtpClient.Port = _config.Port;
                     smtpClient.EnableSsl = true;
