@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Mail;
+using System.Threading.Tasks;
 using EmailWorker.Models;
 using EmailWorker.Settings;
 using Microsoft.Extensions.Options;
@@ -17,7 +18,7 @@ namespace EmailWorker.Service
             _config = options.Value ?? throw new Exception("options.Value was null");
         }
 
-        public void SendMail(EmailDto emailDto)
+        public async Task SendMail(EmailDto emailDto)
         {
             var fromMail = new MailAddress(_config.FromMailAddress, emailDto.DisplayName);
             foreach (var toMail in emailDto.MailAddresses)
@@ -34,8 +35,8 @@ namespace EmailWorker.Service
                     smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
                     smtpClient.UseDefaultCredentials = false;
                     smtpClient.Credentials = new NetworkCredential(fromMail.Address, _config.Password);
-                    
-                    smtpClient.Send(mailMessage);
+
+                    await smtpClient.SendMailAsync(mailMessage);
                     Log.Information($"{DateTimeOffset.Now} Send(mailMessage) to [{toMail}] from [{fromMail.Address}], body:[{emailDto.Body}] with Subject:[{emailDto.Subject}]");
                 }
             }
