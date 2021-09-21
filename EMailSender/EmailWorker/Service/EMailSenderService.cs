@@ -18,7 +18,7 @@ namespace EmailWorker.Service
             _config = options.Value ?? throw new Exception("options.Value was null");
         }
 
-        public async Task SendMail(EmailDto emailDto)
+        public async Task SendMailAsync(EmailDto emailDto)
         {
             var fromMail = new MailAddress(_config.FromMailAddress, emailDto.DisplayName);
             foreach (var toMail in emailDto.MailAddresses)

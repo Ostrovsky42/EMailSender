@@ -27,7 +27,7 @@ namespace EmailWorker
             _dto.DisplayName = context.Message.DisplayName;
             _dto.IsBodyHtml = context.Message.IsBodyHtml;
 
-            _service.SendMail(_dto);
+            _service.SendMailAsync(_dto);
             await Task.CompletedTask;
         }
     }
