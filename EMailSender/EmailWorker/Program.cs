@@ -57,15 +57,12 @@ namespace EmailWorker
                         x.SetKebabCaseEndpointNameFormatter();
                         x.UsingRabbitMq((context, cfg) =>
                         {
-                            cfg.Host(configuration.GetValue<string>($"{_rabbirMqSectionKey}:{_rabbitHost}"), h =>
+                            cfg.Host(GetEnviromentVariable(configuration.GetValue<string>($"{_rabbirMqSectionKey}:{_rabbitHost}")), h =>
                             {
-                                h.Username(configuration.GetValue<string>($"{_rabbirMqSectionKey}:{_rabbitUsername}"));
-                                h.Password(configuration.GetValue<string>($"{_rabbirMqSectionKey}:{_rabbitPassword}"));
-                                
-                                Log.Information($"Host:{_rabbirMqSectionKey}:{_rabbitHost}");
-                                Log.Information($"Username:{_rabbirMqSectionKey}:{_rabbitUsername}");
-                                Log.Information($"Password:{_rabbirMqSectionKey}:{_rabbitPassword}");
+                                h.Username(GetEnviromentVariable(configuration.GetValue<string>($"{_rabbirMqSectionKey}:{_rabbitUsername}")));
+                                h.Password(GetEnviromentVariable(configuration.GetValue<string>($"{_rabbirMqSectionKey}:{_rabbitPassword}")));
                             });
+
                             cfg.ReceiveEndpoint(_queue, e =>
                             {
                                 e.ConfigureConsumer<MailConsumer>(context);
