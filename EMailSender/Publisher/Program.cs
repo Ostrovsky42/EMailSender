@@ -37,7 +37,8 @@ namespace Publisher
                         Subject = subject,
                         Body = body,
                         DisplayName = displayName,
-                        MailAddresses = "zhekul.90@gmail.com"
+                        MailAddresses = "zhekul.90@gmail.com",
+                        Base64String = ""
                     });
                 }
             }
