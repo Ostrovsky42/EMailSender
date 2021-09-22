@@ -1,9 +1,10 @@
-﻿using EmailWorker.Models;
+﻿using System.Threading.Tasks;
+using EmailWorker.Models;
 
 namespace EmailWorker.Service
 {
     public interface IEMailSenderService
     {
-        void SendMail(EmailDto emailDto);
+        Task SendMailAsync(EmailDto emailDto);
     }
 }

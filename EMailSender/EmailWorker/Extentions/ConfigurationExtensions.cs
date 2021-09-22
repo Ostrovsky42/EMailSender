@@ -18,6 +18,7 @@ namespace EmailWorker.Extentions
                 }
             }
         }
+
         private static string RemoveCurlyBrackets(string str)
         {
             return str.Replace("{{", "").Replace("}}", "");

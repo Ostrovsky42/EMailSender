@@ -1,14 +1,19 @@
-﻿using Serilog;
-using System;
+﻿using System;
+using Serilog;
 
 namespace EmailWorker
 {
     public static class EnviromentChecker
     {
-        public static string GetkAndLogEnviromentVariable(string variableName)
+        public static string GetEnviromentVariable(string variable)
         {
-            var variable = Environment.GetEnvironmentVariable(variableName);
-            Log.Information($"Value of environment variable [{variableName}]: [{variable}]");
+            if (variable == null)
+            {
+                Log.Error("Environment variable is null");
+                throw new ArgumentException("Environment variable is null");
+            }
+
+            Log.Information($"Value of environment variable [{variable}]");
             return variable;
         }
     }

@@ -14,11 +14,12 @@ namespace EmailWorker
 {
     public class Program
     {
-        private const string _sectionKey = "Gmail";
+        private const string _gmailSectionKey = "Gmail";
+        private const string _rabbirMqSectionKey = "RabbitMQ";
         private const string _queue = "queue-mail";
-        private static string _rabbitHost = "RABBITMQ_HOST";
-        private static string _rabbitPassword = "RABBITMQ_PASSWORD";
-        private static string _rabbitUsername = "RABBITMQ_USERNAME";
+        private static string _rabbitHost = "Host";
+        private static string _rabbitPassword = "Password";
+        private static string _rabbitUsername = "Username";
         private static string _loggerPath = "LOGGER_PATH";
         private static string _defaultLoggerPath = "C:\\Services\\EmailSender\\Logs.txt";
 
@@ -45,7 +46,8 @@ namespace EmailWorker
                 .UseWindowsService()
                 .ConfigureServices(services =>
                 {
-                    services.AddOptions<EmailConfig>().Bind(configuration.GetSection(_sectionKey));
+                    services.AddOptions<EmailConfig>().Bind(configuration.GetSection(_gmailSectionKey));
+                    services.AddOptions<RabbitMq>().Bind(configuration.GetSection(_rabbirMqSectionKey));
                     services.AddTransient<IEMailSenderService, EMailSenderService>();
                     services.AddHostedService<Worker>();
 
@@ -55,11 +57,12 @@ namespace EmailWorker
                         x.SetKebabCaseEndpointNameFormatter();
                         x.UsingRabbitMq((context, cfg) =>
                         {
-                            cfg.Host(GetkAndLogEnviromentVariable(_rabbitHost), h =>
+                            cfg.Host(GetEnviromentVariable(configuration.GetValue<string>($"{_rabbirMqSectionKey}:{_rabbitHost}")), h =>
                             {
-                                h.Username(GetkAndLogEnviromentVariable(_rabbitUsername));
-                                h.Password(GetkAndLogEnviromentVariable(_rabbitPassword));
+                                h.Username(GetEnviromentVariable(configuration.GetValue<string>($"{_rabbirMqSectionKey}:{_rabbitUsername}")));
+                                h.Password(GetEnviromentVariable(configuration.GetValue<string>($"{_rabbirMqSectionKey}:{_rabbitPassword}")));
                             });
+
                             cfg.ReceiveEndpoint(_queue, e =>
                             {
                                 e.ConfigureConsumer<MailConsumer>(context);
