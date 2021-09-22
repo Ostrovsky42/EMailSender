@@ -24,11 +24,10 @@ namespace EmailWorker
         private static string _defaultLoggerPath = "C:\\Services\\EmailSender\\Logs.txt";
 
         public static void Main(string[] args)
-        {
-            var path = Environment.GetEnvironmentVariable(_loggerPath) ?? _defaultLoggerPath;
+        {           
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
-                .WriteTo.File(path, rollingInterval: RollingInterval.Day)
+                .WriteTo.File(_defaultLoggerPath, rollingInterval: RollingInterval.Day)
                 .CreateLogger();
 
             var configuration = CreateConfiguratuion();
@@ -57,11 +56,11 @@ namespace EmailWorker
                         x.SetKebabCaseEndpointNameFormatter();
                         x.UsingRabbitMq((context, cfg) =>
                         {
-                            cfg.Host(GetEnviromentVariable(configuration.GetValue<string>($"{_rabbirMqSectionKey}:{_rabbitHost}")), h =>
-                            {
-                                h.Username(GetEnviromentVariable(configuration.GetValue<string>($"{_rabbirMqSectionKey}:{_rabbitUsername}")));
-                                h.Password(GetEnviromentVariable(configuration.GetValue<string>($"{_rabbirMqSectionKey}:{_rabbitPassword}")));
-                            });
+                            //cfg.Host(configuration.GetValue<string>($"{_rabbirMqSectionKey}:{_rabbitHost}"), h =>
+                            //{
+                            //    h.Username(configuration.GetValue<string>($"{_rabbirMqSectionKey}:{_rabbitUsername}"));
+                            //    h.Password(configuration.GetValue<string>($"{_rabbirMqSectionKey}:{_rabbitPassword}"));
+                            //});
 
                             cfg.ReceiveEndpoint(_queue, e =>
                             {
