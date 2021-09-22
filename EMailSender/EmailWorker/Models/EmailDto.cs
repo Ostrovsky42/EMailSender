@@ -10,5 +10,6 @@ namespace EmailWorker.Models
         public string DisplayName { get; set; }
         public List<MailAddress> MailAddresses { get; set; }
         public bool IsBodyHtml { get; set; }
+        public string Base64String {  get; set; }
     }
 }
