@@ -28,18 +28,19 @@ namespace EmailWorker.Service
                 using (var smtpClient = new SmtpClient())
                 {
                     mailMessage.Subject = emailDto.Subject;
-                    mailMessage.Body = emailDto.Body;
+                    AlternateView alterViewImage = ContentToAlterView.ContentToAlternateView(emailDto.Base64String);
+                    AlternateView alterViewBody = ContentToAlterView.ContentToAlternateView(emailDto.Body);
+                    mailMessage.AlternateViews.Add(alterViewImage);
+                    mailMessage.AlternateViews.Add(alterViewBody);                   
                     mailMessage.IsBodyHtml = emailDto.IsBodyHtml;
-                    AlternateView alterView = ContentToAlterView.ContentToAlternateView(emailDto.Base64String);
-                    mailMessage.AlternateViews.Add(alterView);
                     smtpClient.Host = _config.Host;
                     smtpClient.Port = _config.Port;
                     smtpClient.EnableSsl = true;
                     smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
                     smtpClient.UseDefaultCredentials = false;
                     smtpClient.Credentials = new NetworkCredential(fromMail.Address, _config.Password);
-                    
-                    smtpClient.Send(mailMessage);
+                    SmtpClient smtp = new SmtpClient(_config.Host, _config.Port) { EnableSsl = false };
+                    await smtpClient.SendMailAsync(mailMessage);
                     Log.Information($"{DateTimeOffset.Now} Send(mailMessage) to [{toMail}] from [{fromMail.Address}], body:[{emailDto.Body}] with Subject:[{emailDto.Subject}]");
                 }
             }
